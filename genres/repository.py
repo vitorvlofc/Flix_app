@@ -7,7 +7,7 @@ class GenreRepository:
     def __init__(self):
         self.__base_url = 'https://vitorvl.pythonanywhere.com/api/v1/'
         self.__genres_url = f'{self.__base_url}genres/'
-        self.__headers = {'Authorization': f'bearer {st.session_state.token}'}
+        self.__headers = {'Authorization': f'Bearer {st.session_state.token}'}
 
 
     def get_genres(self):
