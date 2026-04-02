@@ -7,28 +7,37 @@ from movies.page import show_movies
 
 
 def main():
-    if 'token' not in st.session_state:
+    # Garante que o token sempre exista
+    if "token" not in st.session_state:
+        st.session_state.token = None
+
+    # Controle de autenticação
+    if not st.session_state.token:
         show_login()
-    else:
-        st.title('Flix App')
+        return
 
-        menu_options = st.sidebar.selectbox('Selecione uma opção', ['Início', 'Gêneros', 'Atores/Atrizes', 'Filmes', 'Avaliações'])
+    st.title('Flix App')
 
-        if menu_options == 'Início':
-            st.write('  início')
+    menu_options = st.sidebar.selectbox(
+        'Selecione uma opção',
+        ['Início', 'Gêneros', 'Atores/Atrizes', 'Filmes', 'Avaliações']
+    )
 
-        if menu_options == 'Gêneros':
-            show_genres()
+    if menu_options == 'Início':
+        st.write('Início')
 
-        if menu_options == 'Atores/Atrizes':
-            show_actors()
+    elif menu_options == 'Gêneros':
+        show_genres()
 
-        if menu_options == 'Filmes':
-            show_movies()
+    elif menu_options == 'Atores/Atrizes':
+        show_actors()
 
-        if menu_options == 'Avaliações':
-            show_reviews()
-            
+    elif menu_options == 'Filmes':
+        show_movies()
+
+    elif menu_options == 'Avaliações':
+        show_reviews()
+
 
 if __name__ == '__main__':
     main()

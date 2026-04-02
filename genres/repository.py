@@ -1,32 +1,44 @@
 import streamlit as st
 import requests
-from login.service import logout
 
 
 class GenreRepository:
     def __init__(self):
         self.__base_url = 'https://vitorvl.pythonanywhere.com/api/v1/'
         self.__genres_url = f'{self.__base_url}genres/'
-        self.__headers = {'Authorization': f'Bearer {st.session_state.token}'}
 
+    def __get_headers(self):
+        token = st.session_state.get("token")
+        if not token:
+            return {}
+        return {'Authorization': f'Bearer {token}'}
 
     def get_genres(self):
-        response = requests.get(self.__genres_url, headers=self.__headers)
+        response = requests.get(self.__genres_url, headers=self.__get_headers())
+
         if response.status_code == 200:
             return response.json()
+
         if response.status_code == 401:
-            logout()
-            return None
-        raise Exception(f'Error ao obter dados da API: {response.status_code}')
-    
+            st.session_state.token = None
+            st.warning("Sessão expirada. Faça login novamente.")
+            st.rerun()
+
+        raise Exception(f'Erro ao obter dados da API: {response.status_code}')
 
     def create_genre(self, genre):
-        response = requests.post(self.__genres_url, headers=self.__headers, data = genre,)
+        response = requests.post(
+            self.__genres_url,
+            headers=self.__get_headers(),
+            data=genre
+        )
+
         if response.status_code == 201:
             return response.json()
-        if response.status_code == 401:
-            logout()
-            return None
-        raise Exception(f'Error ao obter dados da API. status code: {response.status_code}')
 
-        
+        if response.status_code == 401:
+            st.session_state.token = None
+            st.warning("Sessão expirada. Faça login novamente.")
+            st.rerun()
+
+        raise Exception(f'Erro ao criar gênero. status code: {response.status_code}')

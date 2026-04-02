@@ -7,13 +7,21 @@ def login(username, password):
     response = Auth_service.get_token(username, password)
 
     if response.get('Error'):
-        st.error(f'Falhaa ao realizar login: {response.get("Error")}]')
-    else:
-        st.session_state.token = response.get('access')
-        st.rerun()
+        st.error(f'Falha ao realizar login: {response.get("Error")}')
+        return
+
+    token = response.get('access')
+
+    if not token:
+        st.error("Token não encontrado na resposta da API.")
+        st.write(response)  # debug
+        return
+
+    st.session_state.token = token
+    st.success("Login realizado com sucesso!")
+    st.rerun()
 
 
 def logout():
-    for key in st.session_state.keys():
-        del st.session_state[key]
+    st.session_state.token = None
     st.rerun()
