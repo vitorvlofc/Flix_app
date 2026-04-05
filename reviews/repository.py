@@ -51,3 +51,6 @@ class ReviewRepository:
             st.rerun()
 
         raise Exception(f'Erro ao criar review: {response.status_code} - {response.text}')
+    
+
+    
