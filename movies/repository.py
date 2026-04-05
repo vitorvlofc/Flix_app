@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 
 
-
 class MoviesRepository:
     def __init__(self):
         self.__base_url = 'https://vitorvl.pythonanywhere.com/api/v1/'
@@ -12,10 +11,16 @@ class MoviesRepository:
         token = st.session_state.get("token")
         if not token:
             return {}
-        return {'Authorization': f'Bearer {token}'}
+        return {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        }
 
     def get_movies(self):
-        response = requests.get(self.__movies_url, headers=self.__get_headers())
+        response = requests.get(
+            self.__movies_url,
+            headers=self.__get_headers()
+        )
 
         if response.status_code == 200:
             return response.json()
@@ -25,14 +30,17 @@ class MoviesRepository:
             st.warning("Sessão expirada. Faça login novamente.")
             st.rerun()
 
-        raise Exception(f'Erro ao obter dados da API: {response.status_code}')
+        raise Exception(f'Erro ao obter dados da API: {response.status_code} - {response.text}')
 
     def create_movie(self, movie):
         response = requests.post(
             self.__movies_url,
             headers=self.__get_headers(),
-            data=movie
+            json=movie  # 🔥 CORREÇÃO PRINCIPAL
         )
+
+        print("STATUS:", response.status_code)
+        print("RESPONSE:", response.text)
 
         if response.status_code == 201:
             return response.json()
@@ -42,4 +50,4 @@ class MoviesRepository:
             st.warning("Sessão expirada. Faça login novamente.")
             st.rerun()
 
-        raise Exception(f'Erro ao criar filme. status code: {response.status_code}')
+        raise Exception(f'Erro ao criar filme: {response.status_code} - {response.text}')
