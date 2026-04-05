@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 
-class ReviewsRepository:
+class ReviewRepository:
     def __init__(self):
         self.__base_url = 'https://vitorvl.pythonanywhere.com/api/v1/'
         self.__reviews_url = f'{self.__base_url}reviews/'
