@@ -7,6 +7,7 @@ from movies.page import show_movies
 from home.home import show_home
 
 
+
 def main():
     # Garante que o token sempre exista
     if "token" not in st.session_state:

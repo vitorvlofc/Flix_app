@@ -53,18 +53,23 @@ class MoviesRepository:
         raise Exception(f'Erro ao criar filme: {response.status_code} - {response.text}')
     
 
-def get_movies_stats(self):
-    response = requests.get(
-        f'{self.__movies_url}stats/',
-        headers=self.__get_headers()
-    )
+    def get_movies_stats(self):
+        url = f'{self.__movies_url}stats/'
 
-    if response.status_code == 200:
-        return response.json()
+        response = requests.get(
+            url,
+            headers=self.__get_headers()
+        )
 
-    if response.status_code == 401:
-        st.session_state.token = None
-        st.warning("Sessão expirada. Faça login novamente.")
-        st.rerun()
+        print("STATUS:", response.status_code)
+        print("RESPONSE:", response.text)
 
-    raise Exception(f'Erro ao obter estatísticas dos filmes: {response.status_code}')
+        if response.status_code == 200:
+            return response.json()
+
+        if response.status_code == 401:
+            st.session_state.token = None
+            st.warning("Sessão expirada. Faça login novamente.")
+            st.rerun()
+
+        raise Exception(f'Erro ao obter estatísticas: {response.status_code}')
