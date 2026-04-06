@@ -18,3 +18,6 @@ class MoviesService:
         }
 
         return self.movies_repository.create_movie(movie)
+    
+    def get_movies_stats(self):
+        return self.movies_repository.get_movies_stats()
