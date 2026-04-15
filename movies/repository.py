@@ -51,7 +51,6 @@ class MoviesRepository:
             st.rerun()
 
         raise Exception(f'Erro ao criar filme: {response.status_code} - {response.text}')
-    
 
     def get_movies_stats(self):
         url = f'{self.__movies_url}stats/'

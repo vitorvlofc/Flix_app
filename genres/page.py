@@ -4,7 +4,6 @@ from st_aggrid import AgGrid
 from genres.service import GenreService
 
 
-
 def show_genres():
     genre_service = GenreService()
     genres = genre_service.get_genres()
@@ -18,6 +17,7 @@ def show_genres():
         st.warning('Nenhum gênero encontrado.')
 
     st.title('Cadastrar novo gênero')
+
     name = st.text_input('Nome do gênero')
     if st.button('Cadastrar'):
         new_genre = genre_service.create_genre(name=name)

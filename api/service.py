@@ -11,7 +11,6 @@ class Auth:
             "username": username,
             "password": password
         }
-
         auth_response = requests.post(
             self.__auth_url,
             json=auth_payload

@@ -63,7 +63,7 @@ def show_reviews():
     if st.button('Enviar Avaliação'):
         try:
             new_review = review_service.create_review(
-                movie=movie_map[selected_movie],  #  ID correto
+                movie=movie_map[selected_movie],  # ID correto
                 stars=stars,
                 comment=comment
             )
